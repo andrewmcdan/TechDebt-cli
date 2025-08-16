@@ -1,0 +1,39 @@
+# Tech Debt Report
+
+**Repo:** `{{ repo_root }}`  
+**Commit:** `{{ commit_sha or "n/a" }}`  
+**Items:** {{ summary.count }}  
+**Average score:** {{ summary.avg_score }}
+
+## Top 10 Hotspots
+| Path | Kind | Score | Notes |
+|------|------|-------|-------|
+{% for it in items[:10] -%}
+| `{{ it.path }}` | `{{ it.kind }}` | **{{ it.score }}** | {{ it.meta.snippet|default("") }} |
+{% endfor %}
+
+## By Kind
+| Kind | Count |
+|------|-------|
+{% for k, v in summary.by_kind.items() -%}
+| {{ k }} | {{ v }} |
+{% endfor %}
+
+## Quick Wins
+Small files (≤200 LOC) with high score (≥60). Good first refactors.
+{% for it in items if it.score >= 60 %}
+- **{{ it.score }}** — `{{ it.path }}` ({{ it.kind }})
+{% endfor %}
+
+## Details
+{% for it in items %}
+### {{ it.path }} — {{ it.kind }} — **{{ it.score }}**
+- Owner: {{ it.owner or "n/a" }}
+- Bucket: {{ it.meta.priority_bucket }}
+- Evidence:
+  - {{ it.meta.snippet|default("") }}
+- Components:
+{% for ck, cv in it.meta.components.items() %}
+  - {{ ck }}: {{ "%.2f"|format(cv) }}
+{% endfor %}
+{% endfor %}

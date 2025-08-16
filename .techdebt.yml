@@ -1,0 +1,35 @@
+weights:
+    inline_priority: 1.0
+    age_days: 0.6
+    churn: 0.6
+    complexity: 0.7
+    deps_outdated: 0.8
+    no_tests: 0.8
+    lint_suppress: 0.5
+    deprecated: 0.7
+
+markers:
+    - pattern: "(TODO|FIXME|HACK|XXX|BUG|OPTIMIZE)"
+      priority_from: '\\[(P\\d)\\]' # e.g., TODO [P1]
+      owner_from: "@([a-z0-9_-]+)"
+
+tests:
+    convention:
+        src_globs: ["src/**/*.ts", "app/**/*.py"]
+        test_globs: ["**/*.test.ts", "tests/**/*.py"]
+
+dependencies:
+    node:
+        package_file: "package.json"
+        lock_files: ["package-lock.json", "pnpm-lock.yaml", "yarn.lock"]
+        allow_loose_ranges: false
+
+complexity:
+    max_fn_lines: 60
+    max_file_lines: 600
+    max_nesting: 4
+
+exclude:
+    - "dist/**"
+    - "vendor/**"
+    - "**/*.min.js"

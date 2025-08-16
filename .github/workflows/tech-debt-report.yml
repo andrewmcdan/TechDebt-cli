@@ -1,0 +1,22 @@
+name: Tech Debt Report
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"  # every Monday 06:00 UTC
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install .
+      - run: techdebt scan . --markdown --json
+      - name: Commit report
+        run: |
+          git config user.name "techdebt-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add TECH_DEBT.md tech-debt.json || true
+          git commit -m "chore: update tech debt report" || echo "No changes"
+          git push || true

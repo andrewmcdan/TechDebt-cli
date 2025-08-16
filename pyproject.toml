@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "techdebt-cli"
+version = "0.1.0"
+description = "Scan a repository and emit a tech-debt dashboard (Markdown + JSON)."
+authors = [{name="Tech Debt Bot", email="bot@users.noreply.github.com"}]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "rich>=13.7.0",
+  "jinja2>=3.1.4",
+  "pathspec>=0.12.1",
+  "pyyaml>=6.0.2",
+  "pygments>=2.18.0"
+]
+
+[project.scripts]
+techdebt = "techdebt_cli.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
