@@ -44,7 +44,11 @@ def is_text_file(path: str) -> bool:
 
 def iter_files(repo_root: str, ignore: PathSpec, excludes: List[str]) -> Iterable[str]:
     exclude_spec = PathSpec.from_lines("gitwildmatch", excludes or [])
-    for root, _, files in os.walk(repo_root):
+    for root, dirs, files in os.walk(repo_root):
+        # Always skip the Git metadata directory
+        dirs[:] = [d for d in dirs if not d.startswith(".git")]
+        if os.path.relpath(root, repo_root).startswith(".git"):
+            continue
         for name in files:
             rel = os.path.relpath(os.path.join(root, name), repo_root)
             if ignore.match_file(rel) or exclude_spec.match_file(rel):

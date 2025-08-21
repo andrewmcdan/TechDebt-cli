@@ -296,7 +296,8 @@ def scan_repo(repo_root: str, cfg: Config, since_days: int = 30, max_items: int 
                         )
                     )
 
-    # Cap and summarize
+    # Sort by score and cap
+    items.sort(key=lambda it: it.score, reverse=True)
     items = items[:max_items]
 
     json_items = []
