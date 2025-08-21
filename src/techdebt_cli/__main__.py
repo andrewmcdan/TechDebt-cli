@@ -23,7 +23,7 @@ def main():
     repo_root = find_repo_root(args.path)
     cfg = load_config(repo_root)
     result = scan_repo(repo_root, cfg, since_days=args.since_days, max_items=args.max_items)
-
+    # TODO: This is a test todo
     if args.json:
         write_json(result, repo_root)
 
