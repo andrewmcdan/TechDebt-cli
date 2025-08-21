@@ -9,7 +9,7 @@
 | Path | Kind | Score | Notes |
 |------|------|-------|-------|
 {% for it in items[:10] -%}
-| `{{ it.path }}` | `{{ it.kind }}` | **{{ it.score }}** | {{ it.meta.snippet|default("") }} |
+| `{{ it.path }}` | `{{ it.kind }}` | **{{ '%.2f'|format(it.score) }}** | {{ (it.meta.snippet or it.meta.line or "")|replace('\n', ' ')|replace('|', '\\|')|truncate(80, True, '…') }} |
 {% endfor %}
 
 ## By Kind
@@ -22,16 +22,16 @@
 ## Quick Wins
 Small files (≤200 LOC) with high score (≥60). Good first refactors.
 {% for it in items if it.score >= 60 %}
-- **{{ it.score }}** — `{{ it.path }}` ({{ it.kind }})
+- **{{ '%.2f'|format(it.score) }}** — `{{ it.path }}` ({{ it.kind }})
 {% endfor %}
 
 ## Details
 {% for it in items %}
-### {{ it.path }} — {{ it.kind }} — **{{ it.score }}**
+### {{ it.path }} — {{ it.kind }} — **{{ '%.2f'|format(it.score) }}**
 - Owner: {{ it.owner or "n/a" }}
 - Bucket: {{ it.meta.priority_bucket }}
 - Evidence:
-  - {{ it.meta.snippet|default("") }}
+  - {{ (it.meta.snippet or it.meta.line or "")|replace('\n', ' ')|truncate(120, True, '…') }}
 - Components:
 {% for ck, cv in it.meta.components.items() %}
   - {{ ck }}: {{ "%.2f"|format(cv) }}
